@@ -104,6 +104,7 @@ const (
 	TimeInForceTypeIOC TimeInForceType = "IOC" // Immediate or Cancel
 	TimeInForceTypeFOK TimeInForceType = "FOK" // Fill or Kill
 	TimeInForceTypeGTX TimeInForceType = "GTX" // Good Till Crossing (Post Only)
+	TimeInForceTypeGTD TimeInForceType = "GTD" // Good Till Date
 
 	NewOrderRespTypeACK    NewOrderRespType = "ACK"
 	NewOrderRespTypeRESULT NewOrderRespType = "RESULT"

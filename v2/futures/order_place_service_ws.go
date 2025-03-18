@@ -56,11 +56,25 @@ type OrderPlaceWsRequest struct {
 	newOrderRespType        NewOrderRespType
 	closePosition           *bool
 	selfTradePreventionMode *SelfTradePreventionMode
+	priceMatch              *PriceMatchType
+	goodTillDate            uint64
 }
 
 // NewOrderPlaceWsRequest init OrderPlaceWsRequest
 func NewOrderPlaceWsRequest() *OrderPlaceWsRequest {
 	return &OrderPlaceWsRequest{}
+}
+
+// Symbol set symbol
+func (s *OrderPlaceWsRequest) PriceMath(priceMatch PriceMatchType) *OrderPlaceWsRequest {
+	s.priceMatch = &priceMatch
+	return s
+}
+
+// Symbol set symbol
+func (s *OrderPlaceWsRequest) GoodTillDate(goodTillDate uint64) *OrderPlaceWsRequest {
+	s.goodTillDate = goodTillDate
+	return s
 }
 
 // Symbol set symbol
@@ -207,6 +221,9 @@ func (s *OrderPlaceWsRequest) buildParams() params {
 	if s.price != nil {
 		m["price"] = *s.price
 	}
+	if s.priceMatch != nil {
+		m["priceMatch"] = *s.priceMatch
+	}
 	if s.newClientOrderID != nil {
 		m["newClientOrderId"] = *s.newClientOrderID
 	} else {
@@ -232,6 +249,9 @@ func (s *OrderPlaceWsRequest) buildParams() params {
 	}
 	if s.selfTradePreventionMode != nil {
 		m["selfTradePreventionMode"] = *s.selfTradePreventionMode
+	}
+	if s.goodTillDate != 0 {
+		m["goodTillDate"] = *&s.goodTillDate
 	}
 
 	return m
