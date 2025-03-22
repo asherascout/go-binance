@@ -46,7 +46,7 @@ var wsServe = func(cfg *WsConfig, handler WsHandler, errHandler ErrHandler) (don
 	if err != nil {
 		return nil, nil, err
 	}
-	c.SetReadLimit(655350)
+	c.SetReadLimit(65535000)
 	doneC = make(chan struct{})
 	stopC = make(chan struct{})
 	go func() {
