@@ -55,9 +55,9 @@ var wsServe = func(cfg *WsConfig, handler WsHandler, errHandler ErrHandler) (don
 		// websocket.Conn.ReadMessage or when the stopC channel is
 		// closed by the client.
 		defer close(doneC)
-		// if WebsocketKeepalive {
-		// 	keepAlive(c, WebsocketTimeout)
-		// }
+		if WebsocketKeepalive {
+			keepAlive(c, WebsocketTimeout)
+		}
 		// Wait for the stopC channel to be closed.  We do that in a
 		// separate goroutine because ReadMessage is a blocking
 		// operation.
@@ -100,11 +100,12 @@ func keepAlive(c *websocket.Conn, timeout time.Duration) {
 			time.Now().Add(WebsocketPongTimeout), // Short deadline to ensure timely response
 		)
 		if err != nil {
+			fmt.Println("pong", err)
 			return err
 		}
 
 		lastResponse = time.Now()
-
+		fmt.Println("pong lastResponse", lastResponse)
 		return nil
 	})
 
