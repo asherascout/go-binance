@@ -66,11 +66,8 @@ var wsServe = func(cfg *WsConfig, handler WsHandler, errHandler ErrHandler) (don
 			select {
 			case <-stopC:
 				silent = true
-				fmt.Println("stop wss...", cfg.Endpoint)
 			case <-doneC:
-				fmt.Println("done wss...", cfg.Endpoint)
 			}
-			fmt.Println("close wss...", cfg.Endpoint)
 			c.Close()
 		}()
 		for {
