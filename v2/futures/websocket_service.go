@@ -402,7 +402,8 @@ type WsContinuousKlineHandler func(event *WsContinuousKlineEvent)
 
 // WsContinuousKlineServe serve websocket continuous kline handler with a pair and contractType and interval like 15m, 30s
 func WsContinuousKlineServe(subscribeArgs *WsContinuousKlineSubscribeArgs, handler WsContinuousKlineHandler,
-	errHandler ErrHandler) (doneC, stopC chan struct{}, err error) {
+	errHandler ErrHandler,
+) (doneC, stopC chan struct{}, err error) {
 	endpoint := fmt.Sprintf("%s/%s_%s@continuousKline_%s", getWsEndpoint(), strings.ToLower(subscribeArgs.Pair),
 		strings.ToLower(subscribeArgs.ContractType), subscribeArgs.Interval)
 	cfg := newWsConfig(endpoint)
@@ -420,7 +421,8 @@ func WsContinuousKlineServe(subscribeArgs *WsContinuousKlineSubscribeArgs, handl
 
 // WsCombinedContinuousKlineServe is similar to WsContinuousKlineServe, but it handles multiple pairs of different contractType with its interval
 func WsCombinedContinuousKlineServe(subscribeArgsList []*WsContinuousKlineSubscribeArgs,
-	handler WsContinuousKlineHandler, errHandler ErrHandler) (doneC, stopC chan struct{}, err error) {
+	handler WsContinuousKlineHandler, errHandler ErrHandler,
+) (doneC, stopC chan struct{}, err error) {
 	endpoint := getCombinedEndpoint()
 	for _, val := range subscribeArgsList {
 		endpoint += fmt.Sprintf("%s_%s@continuousKline_%s", strings.ToLower(val.Pair),
@@ -429,6 +431,7 @@ func WsCombinedContinuousKlineServe(subscribeArgsList []*WsContinuousKlineSubscr
 	endpoint = endpoint[:len(endpoint)-1]
 	cfg := newWsConfig(endpoint)
 	wsHandler := func(message []byte) {
+		fmt.Println(string(message))
 		j, err := newJSON(message)
 		if err != nil {
 			errHandler(err)
