@@ -1,7 +1,6 @@
 package futures
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 	"time"
