@@ -29,15 +29,19 @@ func newWsConfig(endpoint string) *WsConfig {
 }
 
 var wsServe = func(cfg *WsConfig, handler WsHandler, errHandler ErrHandler) (doneC, stopC chan struct{}, err error) {
-	// proxy := http.ProxyFromEnvironment
-	// if cfg.Proxy != nil {
-	// 	u, err := url.Parse(*cfg.Proxy)
-	// 	if err != nil {
-	// 		return nil, nil, err
-	// 	}
-	// 	proxy = http.ProxyURL(u)
-	// }
-	Dialer := websocket.DefaultDialer
+	proxy := http.ProxyFromEnvironment
+	if cfg.Proxy != nil {
+		u, err := url.Parse(*cfg.Proxy)
+		if err != nil {
+			return nil, nil, err
+		}
+		proxy = http.ProxyURL(u)
+	}
+	Dialer := websocket.Dialer{
+		Proxy:             proxy,
+		HandshakeTimeout:  45 * time.Second,
+		EnableCompression: true,
+	}
 
 	c, _, err := Dialer.Dial(cfg.Endpoint, nil)
 	if err != nil {
