@@ -100,12 +100,10 @@ func keepAlive(c *websocket.Conn, timeout time.Duration) {
 			time.Now().Add(WebsocketPongTimeout), // Short deadline to ensure timely response
 		)
 		if err != nil {
-			fmt.Println("pong", err)
 			return err
 		}
 
 		lastResponse = time.Now()
-		fmt.Println("pong lastResponse", lastResponse)
 		return nil
 	})
 
